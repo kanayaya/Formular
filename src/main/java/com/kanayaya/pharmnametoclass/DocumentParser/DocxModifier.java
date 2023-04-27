@@ -48,9 +48,9 @@ public class DocxModifier {
 
                 if (name.endsWith("ия") || name.endsWith("на") || name.endsWith("ая")) {
                     String secondWord = unprocessedName
-                            .split("[ \n]")[1]
-                            .replace("+", "").replace(",", "")
-                            .toLowerCase();
+                            .replace("+", " ").replace(",", " ")
+                            .toLowerCase()
+                            .split("[ \n]")[1];
                     name = name + secondWord;
                 }
                 row.getTableCells().get(index).setText(map.apply(name).toString());

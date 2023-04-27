@@ -1,5 +1,6 @@
 package com.kanayaya.pharmnametoclass.Parser;
 
+import com.kanayaya.pharmnametoclass.SearchTrie.FuzzyTrie;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,11 +18,16 @@ public class WholeClassificationDownloader {
 
     private final ClassificationPageParser parser;
     private final Map<String, Set<String>> classification = new ConcurrentHashMap<>();
+    private final FuzzyTrie trie = new FuzzyTrie();
     private boolean downloaded = false;
 
     private final AtomicInteger counter = new AtomicInteger(0);
     private int size = 0;
     private ExecutorService executors;
+
+    public FuzzyTrie getTrie() {
+        return trie;
+    }
 
     public WholeClassificationDownloader(IProxyList proxyList) {
         this.proxyList = proxyList;
@@ -146,6 +152,7 @@ public class WholeClassificationDownloader {
             set.add(drugClassName);
             return set;
         });
+        trie.add(key);
     }
 
     private Document getDocument(Proxy proxy, String link) throws IOException {
